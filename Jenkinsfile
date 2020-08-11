@@ -12,7 +12,7 @@ pipeline {
    	    steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]){
 		    sh 'echo "Building Docker Image..."'
-     	    	    sh 'docker build -t bedoebied/capstone .'
+     	    	    sh 'sudo docker build -t bedoebied/capstone .'
 		}
             }
         }
@@ -22,8 +22,8 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]){
 		    sh 'echo "Pushing Docker Image..."'
      	    	    sh '''
-                        docker login -u $USERNAME -p $PASSWORD
-			docker push bedoebied/capstone
+                       sudo docker login -u $USERNAME -p $PASSWORD
+			sudo docker push bedoebied/capstone
                     '''
 		}
             }
