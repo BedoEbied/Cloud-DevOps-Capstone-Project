@@ -29,34 +29,16 @@ pipeline {
             }
         }
 	 
-	stage('Create k8s cluster') {
-	    steps {
-		withAWS(credentials: 'ecr_credentials', region: 'us-east-1') {
-		    sh 'echo "Create k8s cluster..."'
-		    sh '''
-			eksctl create cluster \
-			--name bedoebiedcapstoneproject \
-			--version 1.14 \
-			--region us-east-1 \
-			--nodegroup-name standard-workers \
-			--node-type t2.micro \
-			--nodes 2 \
-			--nodes-min 1 \
-			--nodes-max 3 \
-			--managed
-		'''
-		}
-	    }
-        }
-	    
-	stage('Configure kubectl') {
-	    steps {
-		withAWS(credentials: 'ecr_credentials', region: 'us-east-1') {
-		    sh 'echo "Configure kubectl..."'
-		    sh 'aws eks --region us-east-1 update-kubeconfig --name bedoebiedcapstoneproject' 
-		}
-	    }
-        }
+
+	stage('Set current kubectl context') {
+			steps {
+				withAWS(region:'us-east-1', credentials:'ecr_credentials') {
+					sh '''
+						kubectl config use-context arn:aws:eks:us-east-1:559745402149:cluster/bedoebiedcapstoneproject
+					'''
+				}
+			}
+		}	
 
 	stage('Deploy blue container') {
 	    steps {
