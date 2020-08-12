@@ -36,6 +36,7 @@ pipeline {
 			steps {
                 withAWS(region:reg, credentials: credential) {
 					sh '''
+                        export PATH=/home/ubuntu/bin/kubectl/platforms/linux/amd64:$PATH
 						kubectl config use-context arn:aws:eks:us-east-2:559745402149:cluster/capstonecluster
 						
 					'''
