@@ -1,18 +1,21 @@
-apiVersion: v1
-kind: ReplicationController
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: green
+  name: green-app
   labels:
-    app: green
+    version: green
 spec:
-  replicas: 1
+  replicas: 2
+  selector:
+    matchLabels:
+        version: green
   template:
     metadata:
       labels:
-        app: green
+        version: green
     spec:
       containers:
-        - name: green
-          image: bedoebied/clouddevopscapstone
-          ports:
-            - containerPort: 80
+      - name: app
+        image: bedoebied/mycapstone:green
+        ports:
+        - containerPort: 80
