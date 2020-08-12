@@ -32,17 +32,24 @@ pipeline {
             }
         }
 
-        // stage('Set Current kubectl Context') {
-		// 	steps {
-        //         withAWS(region:reg, credentials: credential) {
-		// 			sh '''
-        //                 export PATH=/home/ubuntu/bin/kubectl/platforms/linux/amd64:$PATH
-		// 				kubectl config use-context arn:aws:eks:us-east-2:559745402149:cluster/capstonecluster
+        stage('Create cluster configuration') {
+            steps {
+                withAWS(region:'us-east-2', credentials:'eks-credential') {
+                    sh 'aws eks --region us-east-2 update-kubeconfig --name capstonecluster'
+                }
+            }
+        }
+        
+        stage('Set Current kubectl Context') {
+			steps {
+                withAWS(region:reg, credentials: credential) {
+					sh '''
+						kubectl config use-context arn:aws:eks:us-east-2:559745402149:cluster/capstonecluster
 						
-		// 			'''
-		// 		}
-		// 	}
-		// }
+					'''
+				}
+			}
+		}
 
 
         stage('Deploying blue deployment') {
