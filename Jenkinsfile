@@ -2,8 +2,17 @@ pipeline {
     agent any
     environment {
         image = ''
+        credential = 'eks-credential'
+        reg = 'us-east-2'
+
     }
     stages{
+
+        stage('Linting the index file') {
+            steps {
+                sh 'tidy -q -e index.html'
+            }
+        }
 
         stage('Building image') {
             steps {
@@ -23,24 +32,52 @@ pipeline {
             }
         }
 
-        stage('Creating Kubernetes Cluster') {
+        stage('Set Current kubectl Context') {
+			steps {
+                withAWS(region:reg, credentials: credential) {
+					sh '''
+						kubectl config use-context arn:aws:eks:us-east-2:559745402149:cluster/capstonecluster
+						
+					'''
+				}
+			}
+		}
+
+
+        stage('Deploying blue deployment') {
             steps {
-                withAWS(region:'us-east-2', credentials:'eks-credential') {
-                    sh '''
-                            eksctl create cluster \
-                            --name capstonecluster \
-                            --version 1.17   \
-                            --nodegroup-name capstonenodes \
-                            --node-type t2.micro \
-                            --nodes 2 \
-                            --nodes-min 1 \
-                            --nodes-max 2 \
-                            --node-ami auto \
-                            --region us-east-2 \
-                            --zones us-east-2a \
-                            --zones us-east-2b \
-                            --zones us-east-2c \
-                        '''
+                withAWS(region:reg, credentials: credential) {
+                    sh 'kubectl apply -f blue/blue.yaml'
+                }
+            }
+        }
+
+        stage('Deploying blue service') {
+            steps {
+                withAWS(region:reg, credentials: credential) {
+                    sh 'kubectl apply -f blue/blue_service.yaml'
+                }
+            }
+        }
+
+        stage('Deploying green deployment') {
+            steps {
+                withAWS(region:reg, credentials: credential) {
+                    sh 'kubectl apply -f green/green.yaml'
+                }
+            }
+        }
+
+        stage('Going green') {
+            steps {
+                input 'Ready to redirect traffic to green deployments?'
+            }
+        }
+
+        stage('Deploying green service') {
+            steps {
+                withAWS(region:reg, credentials: credential) {
+                    sh 'kubectl apply -f green/green_service.yaml'
                 }
             }
         }
