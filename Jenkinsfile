@@ -39,7 +39,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Set Current kubectl Context') {
 			steps {
                 withAWS(region:reg, credentials: credential) {
@@ -85,7 +85,10 @@ pipeline {
         stage('Deploying green service') {
             steps {
                 withAWS(region:reg, credentials: credential) {
-                    sh 'kubectl apply -f green/green_service.yaml'
+                    sh '''
+                    kubectl apply -f green/green_service.yaml
+                    kubectl get svc
+                    '''
                 }
             }
         }
