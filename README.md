@@ -1,35 +1,42 @@
-# Cloud-DevOps-Capstone-Project
-Capstone Project Cloud DevOps Udacity
+# Project 5 - Cloud DevOps Engineer Capstone Project
 
-<h2>Project Overview</h2>
+> In this project, I applied my skills and knowledge which was developed throughout the Cloud DevOps Nanodegree program.
+## Project Tasks:
 
-<p> In this project, I applied the skills and knowledge which was developed throughout the Cloud DevOps Nanodegree program. These include:</p>
+* Working in AWS
+* Using Jenkins to implement Continuous Integration and Continuous Deployment
+* Building pipelines
+* Working with CloudFormation to deploy clusters
+* Building Kubernetes clusters
+* Building Docker containers in pipelines
 
-<ul>
-	<li>Working in AWS</li>
-	<li>Using Jenkins to implement Continuous Integration and Continuous Deployment</li>
-	<li>Building pipelines</li>
-	<li>Working with Ansible and CloudFormation to deploy clusters</li>
-	<li>Building Kubernetes clusters</li>
-	<li>Building Docker containers in pipelines</li>
-</ul>
+## About Project: 
 
-***
+> I created a CI/CD pipeline for a basic website that deploys to a cluster in AWS EKS which is Blue/Green Deployment.
+<img src="screenshots/Project.png" width="50%" height="50%">
 
-<p>I developed a CI/CD pipeline for microservices applications with rolling deployment. I developed Continuous Integration steps, such as typographical checking (aka “linting”). I also developed Contiguous Deployment steps. These includes:</p>
 
-<ul>
-	<li>Pushing the built Docker containers to the Docker repository</li>
-	<li>Deploying these Docker containers to a small Kubernetes cluster. For Kubernetes cluster I used AWS EKS. To deploy my Kubernetes cluster using Cloudformation. I ran these from Jenkins as an independent pipeline.</li>
-</ul>
+## Project Requirement:
 
-***
+> To be able to use this CI/CD pipeline you will need to install:
+* Jenkins
+* Blue Ocean Plugin in Jenkins
+* Pipeline-AWS Plugin in Jenkins
+* Docker
+* Pip
+* AWS Cli
+* Eksctl
+* Kubectl
 
-<h2>Environment Setup</h2>
-
-<ul>
-  <li>Create a <code>Dockerfile</code></li>
-  <li>Create a <code>Jenkinsfile</code> including all the necessary stages</li>
-  <li>Install Jenkins and all the necessary plugins in the EC2 Instance</li>
-</ul>
-
+## The files included are:
+```sh
+* /Screenshots : Screenshot the result of deploy.
+* /creating cluster pipeline : Deployment Script of Containers Pipeline file 
+* Jenkinsfile : Jenkinsfile for Creating Pipeline
+* Dockerfile : Dockerfile for building the image 
+* /green/green.yaml : Create a replication controller green pod
+* /green/green-service.yaml : Create the green service
+* /blue/blue.yaml : Create a replication controller blue pod
+* /blue/blue-service.yaml : Create the blue service
+* index.html : Web site Index file.
+```
